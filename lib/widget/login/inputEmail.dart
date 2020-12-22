@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supercharged/supercharged.dart';
 
 class InputEmail extends StatefulWidget {
   final TextEditingController controller;
@@ -18,20 +19,20 @@ class _InputEmailState extends State<InputEmail> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 50, left: 50, right: 50),
+      padding: const EdgeInsets.only(top: 10, left: 50, right: 50),
       child: Container(
         height: 75,
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
           controller: widget.controller,
-          cursorColor: Colors.cyan,
+          cursorColor: "#18718F".toColor(),
           style: TextStyle(
             color: Colors.white,
           ),
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(color: Colors.cyanAccent),
+              borderSide: BorderSide(color: "#AEC1D0".toColor()),
             ),
             labelText: 'E-Mail Adresse',
             labelStyle: TextStyle(

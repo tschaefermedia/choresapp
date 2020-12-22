@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:chores_app/generated/l10n.dart';
 
-class TextLogin extends StatefulWidget {
-  @override
-  _TextLoginState createState() => _TextLoginState();
-}
+class TextLogin extends StatelessWidget {
 
-class _TextLoginState extends State<TextLogin> {
   @override
   Widget build(BuildContext context) {
     return Padding(

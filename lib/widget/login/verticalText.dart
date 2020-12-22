@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:chores_app/generated/l10n.dart';
 
-class VerticalText extends StatefulWidget {
-  @override
-  _VerticalTextState createState() => _VerticalTextState();
-}
-
-class _VerticalTextState extends State<VerticalText> {
+class VerticalText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
