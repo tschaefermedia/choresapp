@@ -19,19 +19,12 @@ class _InputUsernameState extends State<InputUsername> {
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
           controller: widget.controller,
-          cursorColor: "#18718F".toColor(),
-          style: TextStyle(
-            color: Colors.white,
-          ),
+          keyboardType: TextInputType.name,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(color: "#AEC1D0".toColor()),
             ),
-            labelText: 'Username',
-            labelStyle: TextStyle(
-              color: Colors.white,
-            ),
+            labelText: 'Username', 
           ),
           validator: (value) {
             if (value.isEmpty) {

@@ -15,7 +15,6 @@ class VerticalText extends StatelessWidget {
                     S.of(context).loginVerticalText,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 38,
                       fontWeight: FontWeight.w900,
                     ),

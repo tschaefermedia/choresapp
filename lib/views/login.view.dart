@@ -30,12 +30,6 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: ["#628195".toColor(), "#AEC1D0".toColor()]),
-        ),
         child: Form(
           key: _formKey,
           child: ListView(
@@ -55,8 +49,6 @@ class _LoginViewState extends State<LoginView> {
                         padding: const EdgeInsets.only(left: 50, right: 50),
                         child: SwitchListTile(
                             title: const Text('I accept the terms'),
-                            activeTrackColor: "#31556D".toColor(),
-                            activeColor: "#155E7E".toColor(),
                             value: termsAccepted,
                             onChanged: (bool value) {
                               setState(() {
@@ -70,21 +62,6 @@ class _LoginViewState extends State<LoginView> {
                       alignment: Alignment.bottomRight,
                       height: 50,
                       width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey[350],
-                            blurRadius: 10.0,
-                            spreadRadius: 1.0,
-                            offset: Offset(
-                              2.0,
-                              2.0,
-                            ),
-                          ),
-                        ],
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
                       child: isLoading
                           ? Center(
                               child: Row(
@@ -100,17 +77,22 @@ class _LoginViewState extends State<LoginView> {
                                   Text(
                                     isRegisterMode ? 'Register' : 'Login',
                                     style: TextStyle(
-                                      color: "#18718F".toColor(),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                   Icon(
                                     Icons.arrow_forward,
-                                    color: "#18718F".toColor(),
                                   ),
                                 ],
                               ),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              padding: EdgeInsets.all(10.0),
+                              color: Theme.of(context).brightness ==
+                                      Brightness.light
+                                  ? Colors.cyan[600]
+                                  : Colors.cyan[800],
                               onPressed: () {
                                 if (_formKey.currentState.validate()) {
                                   setState(() {
@@ -144,7 +126,7 @@ class _LoginViewState extends State<LoginView> {
                             resetPassword();
                           },
                           child: Text(
-                            'PAsswort vergessen?',
+                            'Passwort vergessen?',
                           ),
                         )))
                 ],
@@ -195,6 +177,9 @@ class _LoginViewState extends State<LoginView> {
       caseSensitive: false,
       multiLine: false,
     );
+    emailController.clear();
+    passwordController.clear();
+    usernameController.clear();
     await showDialog<String>(
         context: context,
         child: new AlertDialog(
@@ -204,19 +189,10 @@ class _LoginViewState extends State<LoginView> {
               new Expanded(
                   child: TextFormField(
                 controller: resetController,
-                cursorColor: "#18718F".toColor(),
-                style: TextStyle(
-                  color: "#31556D".toColor(),
-                ),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide(color: "#31556D".toColor()),
-                  ),
+                      borderRadius: BorderRadius.circular(10.0)),
                   labelText: 'E-Mail Adresse',
-                  labelStyle: TextStyle(
-                    color: "#31556D".toColor(),
-                  ),
                 ),
                 validator: (value) {
                   if (value.isEmpty) {

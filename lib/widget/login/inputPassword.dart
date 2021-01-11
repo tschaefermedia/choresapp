@@ -19,20 +19,13 @@ class _PasswordInputState extends State<PasswordInput> {
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
           controller: widget.controller,
-          cursorColor: "#18718F".toColor(),
-          style: TextStyle(
-            color: Colors.white,
-          ),
           obscureText: true,
+          keyboardType: TextInputType.visiblePassword,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(color: "#AEC1D0".toColor()),
             ),
             labelText: 'Passwort',
-            labelStyle: TextStyle(
-              color: Colors.white,
-            ),
           ),
           validator: (value) {
             if (value.isEmpty) {

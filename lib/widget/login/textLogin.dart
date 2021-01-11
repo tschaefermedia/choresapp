@@ -16,7 +16,6 @@ class TextLogin extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 24,
-                color: Colors.white,
               ),
             ),
           ),
