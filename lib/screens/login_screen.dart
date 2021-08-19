@@ -1,22 +1,19 @@
+import 'package:chores_app/res/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:chores_app/widget/login/inputEmail.dart';
-import 'package:chores_app/widget/login/inputUsername.dart';
-import 'package:chores_app/widget/login/inputPassword.dart';
-import 'package:chores_app/widget/login/textLogin.dart';
-import 'package:chores_app/widget/login/verticalText.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:chores_app/views/home.view.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:supercharged/supercharged.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:chores_app/widgets/login/inputEmail.dart';
+import 'package:chores_app/widgets/login/inputUsername.dart';
+import 'package:chores_app/widgets/login/inputPassword.dart';
+import 'package:chores_app/widgets/login/textLogin.dart';
+import 'package:chores_app/widgets/login/verticalText.dart';
+import 'package:chores_app/screens/home_screen.dart';
+import 'package:chores_app/providers/email_auth_provider.dart';
 
-class LoginView extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   @override
-  _LoginViewState createState() => _LoginViewState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -70,7 +67,7 @@ class _LoginViewState extends State<LoginView> {
                                   children: <Widget>[
                                   CircularProgressIndicator()
                                 ]))
-                          : FlatButton(
+                          : ElevatedButton(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
@@ -78,7 +75,8 @@ class _LoginViewState extends State<LoginView> {
                                     isRegisterMode ? 'Register' : 'Login',
                                     style: TextStyle(
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w600,
+                                      color: Palette.dark['green']
                                     ),
                                   ),
                                   Icon(
@@ -86,15 +84,15 @@ class _LoginViewState extends State<LoginView> {
                                   ),
                                 ],
                               ),
-                              shape: RoundedRectangleBorder(
+                              /* shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10.0)),
                               padding: EdgeInsets.all(10.0),
                               color: Theme.of(context).brightness ==
                                       Brightness.light
                                   ? Colors.cyan[600]
-                                  : Colors.cyan[800],
+                                  : Colors.cyan[800], */
                               onPressed: () {
-                                if (_formKey.currentState.validate()) {
+                                if (_formKey.currentState!.validate()) {
                                   setState(() {
                                     isLoading = true;
                                   });
@@ -107,7 +105,7 @@ class _LoginViewState extends State<LoginView> {
                   Padding(
                       padding: const EdgeInsets.only(top: 75),
                       child: Center(
-                          child: FlatButton(
+                          child: ElevatedButton(
                         onPressed: () {
                           setState(() {
                             isRegisterMode = !isRegisterMode;
@@ -121,7 +119,7 @@ class _LoginViewState extends State<LoginView> {
                     Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: Center(
-                            child: FlatButton(
+                            child: ElevatedButton(
                           onPressed: () {
                             resetPassword();
                           },
@@ -138,36 +136,20 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  void login() {
-    FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text)
-        .then((result) {
+  void login() async {
+    bool loginStatus = await EmailAuthProvider().login(
+        email: emailController.text,
+        password: passwordController.text,
+        context: context);
+    if (loginStatus) {
       isLoading = false;
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Home()),
+        MaterialPageRoute(builder: (context) => HomeScreen()),
       );
-    }).catchError((err) {
-      FirebaseCrashlytics.instance.recordError(err.message, StackTrace.current);
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Error"),
-              content: Text(err.message),
-              actions: [
-                FlatButton(
-                  child: Text("Ok"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            );
-          });
+    } else {
       isLoading = false;
-    });
+    }
   }
 
   void resetPassword() async {
@@ -182,101 +164,63 @@ class _LoginViewState extends State<LoginView> {
     usernameController.clear();
     await showDialog<String>(
         context: context,
-        child: new AlertDialog(
-          contentPadding: const EdgeInsets.all(16.0),
-          content: new Row(
-            children: <Widget>[
-              new Expanded(
-                  child: TextFormField(
-                controller: resetController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  labelText: 'E-Mail Adresse',
-                ),
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Enter Email Address';
-                  } else if (!regExp.hasMatch(value)) {
-                    return 'Please enter a valid email address!';
-                  }
-                  return null;
-                },
-              ))
-            ],
-          ),
-          actions: <Widget>[
-            new FlatButton(
-                child: const Text('Abbrechen'),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
-            new FlatButton(
-                child: const Text('Zurücksetzen'),
-                onPressed: () {
-                  FirebaseAuth.instance
-                      .sendPasswordResetEmail(email: resetController.text)
-                      .then((res) {
-                    Navigator.pop(context);
-                  }).catchError((err) {
-                    FirebaseCrashlytics.instance.log(err.message);
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Error"),
-                            content: Text(err.message),
-                            actions: [
-                              FlatButton(
-                                child: Text("Ok"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              )
-                            ],
-                          );
-                        });
-                  });
-                })
-          ],
-        ));
+        builder: (BuildContext context) => new AlertDialog(
+              insetPadding:
+                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 250.0),
+              title:
+                  new Text("Zum Passwort zurücksetzen, bitte E-Mail angeben!"),
+              content: new Row(
+                children: <Widget>[
+                  new Expanded(
+                      child: TextFormField(
+                    controller: resetController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      labelText: 'E-Mail Adresse',
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Enter Email Address';
+                      } else if (!regExp.hasMatch(value)) {
+                        return 'Please enter a valid email address!';
+                      }
+                      return null;
+                    },
+                  ))
+                ],
+              ),
+              actions: <Widget>[
+                new ElevatedButton(
+                    child: const Text('Abbrechen'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
+                new ElevatedButton(
+                    child: const Text('Zurücksetzen'),
+                    onPressed: () async {
+                      await EmailAuthProvider()
+                          .resetPassword(email: resetController.text);
+                      Navigator.pop(context);
+                    })
+              ],
+            ));
   }
 
-  void register() {
-    FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text)
-        .then((result) {
-      CollectionReference users =
-          FirebaseFirestore.instance.collection('users');
-      users.doc(result.user.uid).set({
-        "email": emailController.text,
-        "username": usernameController.text
-      }).then((res) {
-        isLoading = false;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Home()),
-        );
-      });
-    }).catchError((err) {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Error"),
-              content: Text(err.message),
-              actions: [
-                FlatButton(
-                  child: Text("Ok"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            );
-          });
+  void register() async {
+    bool registerStatus = await EmailAuthProvider().register(
+        email: emailController.text,
+        password: passwordController.text,
+        username: usernameController.text,
+        context: context);
+    if (registerStatus) {
       isLoading = false;
-    });
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+    } else {
+      isLoading = false;
+    }
   }
 }

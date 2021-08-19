@@ -1,13 +1,14 @@
+import 'package:chores_app/pages/settings.dart';
+import 'package:chores_app/providers/authentication_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:chores_app/widget/home/header.dart';
-import 'package:chores_app/widget/home/choresList.dart';
+import 'package:chores_app/pages/chores.dart';
 
-class Home extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeScreenState extends State<HomeScreen> {
   final String title = "Die Haushaltsapp";
 
   int _currentIndex = 0;
@@ -17,23 +18,23 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
+  final List<Widget?> _listOfScreens = [
+    ChoresPage(),
+    null,
+    SettingsPage(),
+  ];
+
   @override
   Widget build(BuildContext context) {
+    Authentication().setupAuthListener(context);
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      body: CustomScrollView(slivers: [
-        Header(),
-        SliverList(
-            delegate: SliverChildListDelegate([
-          new ChoresList(),
-        ]))
-      ]),
+      body: _listOfScreens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         onTap: (value) {
-          // Respond to item press.
           setState(() => _currentIndex = value);
         },
         items: [

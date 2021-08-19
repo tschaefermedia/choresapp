@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:chores_app/generated/l10n.dart';
 
 class VerticalText extends StatelessWidget {
   @override
@@ -12,7 +11,7 @@ class VerticalText extends StatelessWidget {
               child: RotatedBox(
                   quarterTurns: -1,
                   child: Text(
-                    S.of(context).loginVerticalText,
+                    "Login",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 38,

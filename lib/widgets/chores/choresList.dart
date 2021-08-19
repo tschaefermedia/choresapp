@@ -1,7 +1,6 @@
-import 'package:chores_app/widget/home/choreCard.dart';
+import 'package:chores_app/widgets/chores/choreCard.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class ChoresList extends StatelessWidget {
   @override
@@ -9,7 +8,6 @@ class ChoresList extends StatelessWidget {
     CollectionReference choresRef =
         FirebaseFirestore.instance.collection('chores');
 
-    User currentUser = FirebaseAuth.instance.currentUser;
     return StreamBuilder<QuerySnapshot>(
       stream: choresRef.orderBy('nextDueDate', descending: false).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -36,7 +34,7 @@ class ChoresList extends StatelessWidget {
         }
 
         return Column(
-            children: snapshot.data.docs.map((DocumentSnapshot document) {
+            children: snapshot.data!.docs.map((DocumentSnapshot document) {
           return new ChoreCard(document.data());
         }).toList());
       },

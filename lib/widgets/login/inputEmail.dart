@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:supercharged/supercharged.dart';
 
 class InputEmail extends StatefulWidget {
   final TextEditingController controller;
 
-  InputEmail({Key key, @required this.controller}) : super(key: key);
+  InputEmail({ Key? key, required this.controller}) : super(key: key);
   @override
   _InputEmailState createState() => _InputEmailState();
 }
@@ -33,7 +32,7 @@ class _InputEmailState extends State<InputEmail> {
             labelText: 'E-Mail Adresse',
           ),
           validator: (value) {
-            if (value.isEmpty) {
+            if (value!.isEmpty) {
               return 'Enter Email Address';
             } else if (!regExp.hasMatch(value)) {
               return 'Please enter a valid email address!';

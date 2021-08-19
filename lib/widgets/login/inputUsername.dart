@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:supercharged/supercharged.dart';
 
 class InputUsername extends StatefulWidget {
   final TextEditingController controller;
 
-  InputUsername({Key key, @required this.controller}) : super(key: key);
+  InputUsername({Key? key, required this.controller}) : super(key: key);
   @override
   _InputUsernameState createState() => _InputUsernameState();
 }
@@ -27,7 +26,7 @@ class _InputUsernameState extends State<InputUsername> {
             labelText: 'Username', 
           ),
           validator: (value) {
-            if (value.isEmpty) {
+            if (value!.isEmpty) {
               return 'Enter Username';
             }
             return null;

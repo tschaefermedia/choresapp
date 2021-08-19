@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:supercharged/supercharged.dart';
 
-class Header extends StatelessWidget {
+class HeroHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class Header extends StatelessWidget {
           centerTitle: true,
           title: Text('Die Haushaltsapp',
               style: TextStyle(
-                color: "#eeeeee".toColor(),
+                color: Colors.grey[400],
                 fontSize: 16.0,
               )),
           background: Image.network(

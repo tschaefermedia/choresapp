@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:chores_app/generated/l10n.dart';
 
 class TextLogin extends StatelessWidget {
 
@@ -12,7 +11,7 @@ class TextLogin extends StatelessWidget {
           width: 200,
           child: Center(
             child: Text(
-              S.of(context).loginMainText,
+              "Login",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 24,

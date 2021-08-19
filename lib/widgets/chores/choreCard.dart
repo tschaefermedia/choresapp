@@ -11,7 +11,7 @@ class ChoreCard extends StatelessWidget {
     return Card(
         elevation: 10,
         child: Padding(
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(20),
           child: Row(
             children: [
               Expanded(
@@ -52,7 +52,7 @@ class ChoreCard extends StatelessWidget {
                         Icons.cleaning_services,
                         color: Theme.of(context).accentColor
                       )),
-              FlatButton(
+              TextButton(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[

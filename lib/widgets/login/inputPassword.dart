@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:supercharged/supercharged.dart';
 
 class PasswordInput extends StatefulWidget {
   final TextEditingController controller;
 
-  PasswordInput({Key key, @required this.controller}) : super(key: key);
+  PasswordInput({Key? key, required this.controller}) : super(key: key);
   @override
   _PasswordInputState createState() => _PasswordInputState();
 }
@@ -28,7 +27,7 @@ class _PasswordInputState extends State<PasswordInput> {
             labelText: 'Passwort',
           ),
           validator: (value) {
-            if (value.isEmpty) {
+            if (value!.isEmpty) {
               return 'Enter Password';
             } else if (value.length < 8) {
               return 'Password must be atleast 8 characters!';
